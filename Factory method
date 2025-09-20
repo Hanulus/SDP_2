@@ -1,0 +1,120 @@
+# ===== Factory Method =====
+# logistics: road or sea
+
+class Transport:
+    def deliver(self):
+        pass
+
+# truck
+class Truck(Transport):
+    def deliver(self):
+        return "Delivering by land in a truck."
+
+# ship
+class Ship(Transport):
+    def deliver(self):
+        return "Delivering by sea in a ship."
+
+# base logistics
+class Logistics:
+    def create_transport(self):
+        pass
+
+    def plan_delivery(self):
+        transport = self.create_transport()
+        return transport.deliver()
+
+# road logistics
+class RoadLogistics(Logistics):
+    def create_transport(self):
+        return Truck()
+
+# sea logistics
+class SeaLogistics(Logistics):
+    def create_transport(self):
+        return Ship()
+
+
+# ===== Abstract Factory =====
+# GUI: Windows or Mac
+
+# base button
+class Button:
+    def render(self):
+        pass
+
+# base checkbox
+class Checkbox:
+    def render(self):
+        pass
+
+# windows button
+class WinButton(Button):
+    def render(self):
+        return "Rendering Windows button."
+
+# windows checkbox
+class WinCheckbox(Checkbox):
+    def render(self):
+        return "Rendering Windows checkbox."
+
+# mac button
+class MacButton(Button):
+    def render(self):
+        return "Rendering Mac button."
+
+# mac checkbox
+class MacCheckbox(Checkbox):
+    def render(self):
+        return "Rendering Mac checkbox."
+
+# base factory
+class GUIFactory:
+    def create_button(self):
+        pass
+    def create_checkbox(self):
+        pass
+
+# windows factory
+class WinFactory(GUIFactory):
+    def create_button(self):
+        return WinButton()
+    def create_checkbox(self):
+        return WinCheckbox()
+
+# mac factory
+class MacFactory(GUIFactory):
+    def create_button(self):
+        return MacButton()
+    def create_checkbox(self):
+        return MacCheckbox()
+
+
+# ===== Client code =====
+
+def run_logistics():
+    choice = input("Enter type of delivery (road/sea): ").lower()
+    if choice == "road":
+        logistics = RoadLogistics()
+    else:
+        logistics = SeaLogistics()
+    print(logistics.plan_delivery())
+
+def run_gui():
+    os_type = input("Enter OS (win/mac): ").lower()
+    if os_type == "win":
+        factory = WinFactory()
+    else:
+        factory = MacFactory()
+    button = factory.create_button()
+    checkbox = factory.create_checkbox()
+    print(button.render())
+    print(checkbox.render())
+
+if __name__ == "__main__":
+    print("Choose demo: 1 = Logistics (Factory Method), 2 = GUI (Abstract Factory)")
+    demo_choice = input("Enter choice: ")
+    if demo_choice == "1":
+        run_logistics()
+    else:
+        run_gui()
